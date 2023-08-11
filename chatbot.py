@@ -2,11 +2,19 @@ import openai
 import streamlit as st
 
 
+st.set_page_config(
+    page_title="Чат-бот АШАН",
+    page_icon="./images/favicon.ico",
+)
+
+
 CONFIG = {
     'gpt_model': 'gpt-3.5-turbo',
-    'bot_name': 'Ашанчик',
-    'placeholder_msg': 'Чем могу помочь?',
-    'add_context_every_n': 20
+    'bot_name': 'Чат-бот АШАН',
+    'placeholder_msg': 'Чем я могу помочь?',
+    'add_context_every_n': 20,
+    'user_avatar': '🍀',
+    'assistant_avatar': './images/favicon.ico'
 }
 
 
@@ -27,7 +35,8 @@ def add_context(prompt, context, start=True):
 
 def main():
     # chatbot name, appear at the top of page
-    st.title(CONFIG['bot_name'])
+    # st.title(CONFIG['bot_name'])
+    st.image('./images/auchan-logo.png', caption='Чат-бот АШАН', width=200)
 
     # add openai api key from secrets
     openai.api_key = st.secrets['OPENAI_API_KEY']
@@ -47,7 +56,7 @@ def main():
     # phrase locates in the user input placeholder at each query
     if show_prompt := st.chat_input(CONFIG['placeholder_msg']):
         # show message on screen
-        with st.chat_message('user'):
+        with st.chat_message('user', avatar=CONFIG['user_avatar']):
             st.markdown(show_prompt)
 
         # help with products
@@ -63,7 +72,7 @@ def main():
             'show_content': show_prompt
         })
 
-        with st.chat_message('assistant'):
+        with st.chat_message('assistant', avatar=CONFIG['assistant_avatar']):
             message_placeholder = st.empty()
             full_response = ''
 
