@@ -6,7 +6,20 @@ CONFIG = {
     'gpt_model': 'gpt-3.5-turbo',
     'bot_name': 'Ашанчик',
     'placeholder_msg': 'Чем могу помочь?',
+    'add_context_every_n': 20
 }
+
+
+CONTEXT_PATTERN = 'Используй "Контекст" для ответа на вопросы про АШАН.\n'
+CONTEXT_PATTERN += 'Контекст:\n'
+CONTEXT_PATTERN += '- молоко "Буренка" - 100 рублей, 1 литр.\n'
+CONTEXT_PATTERN += '- молоко "Простаквашино" - 200 рублей, 1.5 литра.\n'
+CONTEXT_PATTERN += '- сыр "Пармезан" - 150 рублей, 200 грамм.\n'
+
+
+def add_context(prompt):
+    prompt = CONTEXT_PATTERN + prompt
+    return prompt
 
 
 def main():
@@ -26,16 +39,26 @@ def main():
 
     for message in st.session_state.messages:
         with st.chat_message(message['role']):
-            st.markdown(message['content'])
+            st.markdown(message['show_content'])
 
     # phrase locates in the user input placeholder at each query
-    if prompt := st.chat_input(CONFIG['placeholder_msg']):
-        # append message from the user in a session state
-        st.session_state.messages.append({'role': 'user', 'content': prompt})
-
+    if show_prompt := st.chat_input(CONFIG['placeholder_msg']):
         # show message on screen
         with st.chat_message('user'):
-            st.markdown(prompt)
+            st.markdown(show_prompt)
+
+        # help with products
+        if len(st.session_state.messages) % CONFIG['add_context_every_n'] == 0:
+            prompt = add_context(show_prompt)
+        else:
+            prompt = show_prompt
+
+        # append message from the user in a session state
+        st.session_state.messages.append({
+            'role': 'user',
+            'content': prompt,
+            'show_content': show_prompt
+        })
 
         with st.chat_message('assistant'):
             message_placeholder = st.empty()
@@ -66,7 +89,8 @@ def main():
         st.session_state.messages.append(
             {
                 'role': 'assistant',
-                'content': full_response
+                'content': full_response,
+                'show_content': full_response
             }
         )
 
