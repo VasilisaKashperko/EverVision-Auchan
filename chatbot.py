@@ -10,15 +10,18 @@ CONFIG = {
 }
 
 
-CONTEXT_PATTERN = 'Используй "Контекст" для ответа на вопросы про АШАН.\n'
-CONTEXT_PATTERN += 'Контекст:\n'
-CONTEXT_PATTERN += '- молоко "Буренка" - 100 рублей, 1 литр.\n'
-CONTEXT_PATTERN += '- молоко "Простаквашино" - 200 рублей, 1.5 литра.\n'
-CONTEXT_PATTERN += '- сыр "Пармезан" - 150 рублей, 200 грамм.\n'
+HELP_CONTEXT = 'Используй "Ассортимент АШАН:" для ответа на вопросы.\n'
+HELP_CONTEXT += '"Ассортимент АШАН":\n'
+HELP_CONTEXT += '- молоко "Буренка" - 100 рублей, 1 литр.\n'
+HELP_CONTEXT += '- молоко "Простаквашино" - 200 рублей, 1.5 литра.\n'
+HELP_CONTEXT += '- сыр "Пармезан" - 150 рублей, 200 грамм.\n'
 
 
-def add_context(prompt):
-    prompt = CONTEXT_PATTERN + prompt
+def add_context(prompt, context, start=True):
+    if start:
+        prompt = context + prompt
+    else:
+        prompt = prompt + context
     return prompt
 
 
@@ -49,7 +52,7 @@ def main():
 
         # help with products
         if len(st.session_state.messages) % CONFIG['add_context_every_n'] == 0:
-            prompt = add_context(show_prompt)
+            prompt = add_context(show_prompt, HELP_CONTEXT, start=True)
         else:
             prompt = show_prompt
 
