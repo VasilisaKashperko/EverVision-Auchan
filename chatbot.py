@@ -50,7 +50,11 @@ def main():
         st.session_state.messages = []
 
     for message in st.session_state.messages:
-        with st.chat_message(message['role']):
+        if message['role'] == 'user':
+            avatar = CONFIG['user_avatar']
+        elif message['role'] == 'assistant':
+            avatar = CONFIG['assistant_avatar']
+        with st.chat_message(message['role'], avatar=avatar):
             st.markdown(message['show_content'])
 
     # phrase locates in the user input placeholder at each query
