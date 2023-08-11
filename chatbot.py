@@ -1,11 +1,7 @@
 import openai
 import streamlit as st
-
-
-st.set_page_config(
-    page_title="Чат-бот АШАН",
-    page_icon="./images/favicon.ico",
-)
+from search import langchain_load_db, langchain_find_docs, \
+    langchain_parse_docs
 
 
 CONFIG = {
@@ -14,16 +10,20 @@ CONFIG = {
     'placeholder_msg': 'Чем я могу помочь?',
     'add_context_every_n': 20,
     'user_avatar': '🍀',
-    'assistant_avatar': './images/favicon.ico'
+    'assistant_avatar': './images/favicon.ico',
+    'help_context': './docs/help.txt',
+    'logo': './images/auchan-logo.png',
+    'page_icon': './images/favicon.ico'
 }
 
-HELP_CONTEXT = 'Ты - консультант магазина АШАН. Если тебе написали "здравствуйте", ответь так же.\n'
-HELP_CONTEXT += 'Если разговор приобрел тему политики, отвечай вежливым отказом.\n'
-HELP_CONTEXT += 'Используй "Ассортимент магазина АШАН:" для ответа на вопросы.\n'
-HELP_CONTEXT += '"Ассортимент АШАН":\n'
-HELP_CONTEXT += '- молоко "Буренка" - 100 рублей, 1 литр.\n'
-HELP_CONTEXT += '- молоко "Простаквашино" - 200 рублей, 1.5 литра.\n'
-HELP_CONTEXT += '- сыр "Пармезан" - 150 рублей, 200 грамм.\n'
+st.set_page_config(
+    page_title=CONFIG['bot_name'],
+    page_icon=CONFIG['page_icon'],
+)
+
+with open(CONFIG['help_context']) as f:
+    help_lines = f.readlines()
+    HELP_CONTEXT = ''.join(help_lines)
 
 
 def add_context(prompt, context, start=True):
@@ -36,11 +36,13 @@ def add_context(prompt, context, start=True):
 
 def main():
     # chatbot name, appear at the top of page
-    # st.title(CONFIG['bot_name'])
-    st.image('./images/auchan-logo.png', caption='Чат-бот АШАН', width=200)
+    st.image(CONFIG['logo'], caption=CONFIG['bot_name'], width=200)
 
     # add openai api key from secrets
     openai.api_key = st.secrets['OPENAI_API_KEY']
+
+    # load vectorized documents
+    vector_db = langchain_load_db()
 
     # choose openai model
     model_key = 'openai_model'
@@ -64,11 +66,18 @@ def main():
         with st.chat_message('user', avatar=CONFIG['user_avatar']):
             st.markdown(show_prompt)
 
-        # help with products
-        if len(st.session_state.messages) % CONFIG['add_context_every_n'] == 0:
-            prompt = add_context(show_prompt, HELP_CONTEXT, start=True)
-        else:
-            prompt = show_prompt
+        # find documents using prompt
+        docs = langchain_find_docs(vector_db, show_prompt)
+
+        # parse docs into singe context line
+        context_str = langchain_parse_docs(docs)
+
+        # add context
+        prompt = add_context(
+            show_prompt,
+            HELP_CONTEXT + context_str,
+            start=True
+        )
 
         # append message from the user in a session state
         st.session_state.messages.append({
@@ -81,12 +90,24 @@ def main():
             message_placeholder = st.empty()
             full_response = ''
 
+            gpt_chars = 0
+            messages_gpt = []
+            for m in st.session_state.messages[::-1]:
+                gpt_chars += len(m['content'])
+
+                if gpt_chars > 4000:
+                    break
+
+                messages_gpt += [m]
+
+            messages_gpt = messages_gpt[::-1]
+
             # messages - list of history, role - user or assistant
             responses = openai.ChatCompletion.create(
                 model=st.session_state[model_key],
                 messages=[
                     {'role': m['role'], 'content': m['content']}
-                    for m in st.session_state.messages
+                    for m in messages_gpt
                 ],
                 stream=True,
             )
