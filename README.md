@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/VasilisaKashperko/EverVision-Auchan/assets/90206134/d2d39a71-7219-4a07-9222-58dcf0c03680" alt="EverVision">
+  <img src="https://github.com/VasilisaKashperko/EverVision-Auchan/assets/90206134/992efd5e-1b2b-4e94-bafc-11256fe98bcb" alt="EverVision">
 </div>
 
 # Инструкция по запуску
