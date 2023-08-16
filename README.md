@@ -42,6 +42,15 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+Удебитесь, что данные зависимости установлены:
+```zsh
+pip install openai
+pip install streamlit
+pip install langchain
+pip install tiktoken
+pip install faiss-cpu
+```
+
 ## Шаг 6: Создание файла с секретами
 
 Создайте файл secrets.toml в директории .streamlit:
