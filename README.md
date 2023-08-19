@@ -3,8 +3,8 @@
 
 <table>
   <tr>
-    <td><img src="https://github.com/VasilisaKashperko/EverVision-Auchan/assets/90206134/1273d704-fcd4-47b0-9f26-4480174d6b66" alt="EverVision" width="1280" height="600"></td>
-    <td><img src="https://github.com/VasilisaKashperko/EverVision-Auchan/assets/90206134/3960d7b2-7888-4756-9c8b-7355d9655d91" alt="EverVision" width="1280" height="600"></td>
+    <td><img src="https://github.com/VasilisaKashperko/EverVision-Auchan/assets/90206134/1273d704-fcd4-47b0-9f26-4480174d6b66" alt="EverVision" width="1280" height="660"></td>
+    <td><img src="https://github.com/VasilisaKashperko/EverVision-Auchan/assets/90206134/3960d7b2-7888-4756-9c8b-7355d9655d91" alt="EverVision" width="1280" height="660"></td>
   </tr>
   <tr>
     <td><img src="https://github.com/VasilisaKashperko/EverVision-Auchan/assets/90206134/671026e6-4593-49dd-b159-575c6de6ac85" alt="EverVision"></td>
