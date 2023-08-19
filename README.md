@@ -1,6 +1,16 @@
-<div align="center">
-  <img src="https://github.com/VasilisaKashperko/EverVision-Auchan/assets/90206134/992efd5e-1b2b-4e94-bafc-11256fe98bcb" alt="EverVision">
-</div>
+# ИИ чат-бот для магазина АШАН
+## Пользовательский интерфейс
+
+<table>
+  <tr>
+    <td><img src="https://github.com/VasilisaKashperko/EverVision-Auchan/assets/90206134/1273d704-fcd4-47b0-9f26-4480174d6b66" alt="EverVision" width="1280" height="680"></td>
+    <td><img src="https://github.com/VasilisaKashperko/EverVision-Auchan/assets/90206134/3960d7b2-7888-4756-9c8b-7355d9655d91" alt="EverVision" width="1280" height="680"></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/VasilisaKashperko/EverVision-Auchan/assets/90206134/671026e6-4593-49dd-b159-575c6de6ac85" alt="EverVision"></td>
+    <td><img src="https://github.com/VasilisaKashperko/EverVision-Auchan/assets/90206134/c0c17bab-de65-409b-b4a5-e326bda5c095" alt="EverVision"></td>
+  </tr>
+</table>
 
 # Инструкция по запуску
 
@@ -91,3 +101,7 @@ sh run.sh
 После выполнения указанных шагов, бот будет успешно запущен на вашей локальной машине. Наслаждайтесь общением!
 
 На данном этапе к просмотру и тестированию рекомендуется ветка main. Разработка на текущий момент ведется в ветке vector_search (тоже рекомендуется к просмотру :)).
+
+<div align="center">
+  <img src="https://github.com/VasilisaKashperko/EverVision-Auchan/assets/90206134/c045a94f-04e6-47f0-8d7b-5ad2821cb070" alt="EverVision">
+</div>
